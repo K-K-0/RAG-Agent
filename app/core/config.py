@@ -1,4 +1,4 @@
-from pydantic_settings import BaseSettings, SettingConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     open_api_key: str = ""
@@ -10,6 +10,6 @@ class Settings(BaseSettings):
     chunk_overlap: int = 50
     top_k: int = 3
 
-    model_config = SettingConfigDict(env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
 settings = Settings()
