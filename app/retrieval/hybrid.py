@@ -1,18 +1,20 @@
 from retrieval.vector_store import VectorStore
 from retrieval.bm25 import BM25Search
+from retrieval.reranker import Reranker
 
 class HybridRetriever:
 
     def __init__(self, documents):
 
         self.vector_retriever = (VectorStore.get_retriever())
-
+        self.reranker = Reranker()
         self.bm25_retriever = (BM25Search(documents).get_retriever())
 
     def retrieve(self, query):
 
         vector_docs = self.vector_retriever.invoke(query)
         bm25_docs = self.bm25_retriever.invoke(query)
+        
 
         results = []
 
@@ -23,6 +25,11 @@ class HybridRetriever:
                 results.append(doc)
                 seen.add(doc.page_content)
 
-        return results
+        rerank = self.reranker.rerank(
+            query=query,
+            documents=results,
+            top_k=5
+        )
+        return rerank
 
 
