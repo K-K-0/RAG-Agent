@@ -1,13 +1,17 @@
-from functools import lru_cache
-from sentence_transformers import SentenceTransformer
-from app.core.config import settings
+from langchain_openai import OpenAIEmbeddings
+import os
+from dotenv import load_dotenv
 
-@lru_cache
-def _model() -> SentenceTransformer:
-    return SentenceTransformer(settings.embedding_model)
+load_dotenv()
 
-def embed_texts(texts: list[str]) -> list[list[float]]:
-    return _model.encode(texts, normalize_embeddings=True).tolist()
+class Embedder:
 
-def embed_query(query: str) -> list[float]:
-    return embed_texts([query])[0]
+    def __init__(self):
+        self.embedding = OpenAIEmbeddings(
+            model="text-embedding-3-small",
+            openai_api_base="https://aipipe.org/openai/v1",  
+            openai_api_key=os.getenv("OPENAI_API_KEY")
+        )
+
+    def get_embedding(self):
+        return self.embedding

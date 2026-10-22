@@ -1,8 +1,17 @@
-import chromadb
-from app.core.config import settings
+from langchain_chroma import Chroma
+from retrieval.embeddings import Embedder
 
-def get_collection():
-    client = chromadb.PersistentClient(path=settings.vector_store_dir)
-    return client.get_or_create_collection(
-        name = "docs", metadata={"hnsw:space": "cosine"}
-    )
+class VectorStore:
+    def __init__(self):
+        self.embedding = Embedder().get_embedding()
+        self.db = Chroma(
+            persist_directory="storage",
+            embedding_function=self.embedding
+        )
+
+    def add_document(self, documents):
+        self.db.add_documents(documents)
+
+    def get_retriever(self):
+        return self.db.as_retriever()
+

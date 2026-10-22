@@ -1,12 +1,25 @@
-import pytest
-from app.ingestion.chunker import chunk_text
+import os
+import sys
 
 
-def test_chunks_overlaps():
-    chunks = chunk_text("a" * 1000, chunk_size=500, chunk_overlap=100)
-    assert len(chunks) == 3
-    assert all(len(c) <= 500 for c in chunks)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-def test_bad_overlap():
-    with pytest.raises(ValueError):
-        chunk_text("hello", chunk_size=10, chunk_overlap=10)
+from retrieval.vector_store import VectorStore
+
+# 1. Initialize your database instance
+vector_store = VectorStore()
+retriever = vector_store.get_retriever()
+
+# 2. Test if Chroma actually holds data by executing a direct similarity search
+query = "RAG"
+print(f"Testing retrieval for: '{query}'...")
+
+# Fetch the top matches
+results = retriever.vectorstore.similarity_search(query, k=2)
+
+if not results:
+    print("❌ ERROR: Your database is completely empty! Ingestion is not saving data permanently.")
+else:
+    print(f"✅ SUCCESS! Found {len(results)} matching chunks in your database:")
+    for idx, doc in enumerate(results):
+        print(f"\nChunk {idx+1} Content:\n{doc.page_content}")

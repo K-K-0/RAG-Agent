@@ -1,5 +1,13 @@
-from fastapi import FastAPI
-from app.api.routes import router
+from rag import RAG
 
-app = FastAPI(title="Simple RAG")
-app.include_router(router)
+bot = RAG()
+
+while True:
+
+    question = input("\nASK: ")
+    if question.lower() == "exit":
+        break
+
+    answer = bot.ask(question)
+    print("\nAnswer\n")
+    print(answer)

@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from app.api.schemas import AskRequest, AskResponse, Source
 from app.graph.rag_graph import rag_graph
-from app.ingestion.pipeline import ingest
+from app.ingestion.ingest import ingest
 
 router = APIRouter()
 

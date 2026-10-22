@@ -1,17 +1,13 @@
-from openai import OpenAI
-from app.core.config import settings
+import os
+from dotenv import load_dotenv
+from langchain_openai import ChatOpenAI
 
-AI_PIPE_BASE_URL = "https://aipipe.org/openai/v1" 
+load_dotenv() 
 
-_client = OpenAI(
-    base_url=AI_PIPE_BASE_URL,
-    api_key=settings.openai_api_key or "missing"  # Ensure this contains your AIPipe Token
-)
-
-def generate(prompt: str) -> str:
-    response = _client.chat.completions.create(
-        model=settings.llm_model,
-        messages=[{"role": "user", "content": prompt}],
+def load_llm():
+    return ChatOpenAI(
+        model="gpt-4o-mini",
         temperature=0,
+        openai_api_base="https://aipipe.org/openai/v1", 
+        openai_api_key=os.getenv("OPENAI_API_KEY") 
     )
-    return response.choices[0].message.content
