@@ -13,5 +13,11 @@ class VectorStore:
         self.db.add_documents(documents)
 
     def get_retriever(self):
-        return self.db.as_retriever()
+        return self.db.as_retriever(
+            search_type="mmr",
+            search_kwargs={
+                "k":5,
+                "fetch_k":20
+            }
+        )
 
