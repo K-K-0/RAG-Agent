@@ -11,6 +11,6 @@ def retrieve(question: str, k: int | None=None) -> list[dict]:
     return [
             {"text": text, "source": meta["source"], "distance": dist } 
             for text, meta, dist in zip(
-                result["documents"][0], result["metadatas"][0], result["distances"][0]
+                result["documents"][0], result["metadatas"][0], result["distancess"][0]
             )
     ]
