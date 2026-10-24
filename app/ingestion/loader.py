@@ -7,5 +7,17 @@ class PDFLoader:
 
     def load(self):
         loader = PyPDFLoader(self.path)
-        return loader.load()
+        documents = loader.load()
+
+        for doc in documents:
+
+            doc.metadata.update(
+                {
+                    "source": self.path,
+                    "document_type": "pdf"
+                }
+            )
+
+
+        return documents
     
