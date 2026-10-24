@@ -1,13 +1,18 @@
-from rag import RAG
+from graph.rag_graph import rag_graph
 
-bot = RAG()
 
-while True:
+result = rag_graph.invoke(
+    {
+        "question":
+        "What is context in RAG?",
 
-    question = input("\nASK: ")
-    if question.lower() == "exit":
-        break
+        "documents":[],
 
-    answer = bot.ask(question)
-    print("\nAnswer\n")
-    print(answer)
+        "answer":"",
+
+        "rewrite_count":0
+    }
+)
+
+
+print(result["answer"])

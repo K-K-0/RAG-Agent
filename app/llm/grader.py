@@ -1,13 +1,11 @@
 from langchain_openai import ChatOpenAI
+from llm.client import load_llm
 from langchain_core.prompts import ChatPromptTemplate
 
 class DocumentGrader:
 
     def __init__(self):
-        self.llm = ChatOpenAI(
-            model="gpt-4o-mini",
-            temperature=0
-        )
+        self.llm = self.llm = load_llm()
 
         self.prompt = ChatPromptTemplate.from_template(
             """

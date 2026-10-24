@@ -1,28 +1,28 @@
-from typing import TypedDict
-from langgraph.graph import StateGraph, START, END
-from app.retrieval.retriever import retrieve
-from app.prompts.rag_prompt import build_prompt
-from app.llm.client import generate
+from langgraph.graph import StateGraph, END
 
-class RAGState(TypedDict):
-    question: str
-    docs: list[dict]
-    answer: str
+from graph.rag_state import RAGState
 
-def retrieve_node(state: RAGState) -> dict:
-    return {"docs": retrieve(state["question"])}
+from graph.rag_nodes import (
+    retrieve_node,
+    grade_node,
+    rewrite_node,
+    generate_node, decide_next
+)
 
-def generate_node(state: RAGState) -> dict:
-    prompt = build_prompt(state["question"])
-    return {"answer": generate(prompt)}
+graph = StateGraph(RAGState)
 
-def build_graph():
-    g = StateGraph(RAGState)
-    g.add_node("retrieve", retrieve_node)
-    g.add_node("generate", generate_node)
-    g.add_edge(START, "retrieve")
-    g.add_edge("retrieve", "generate")
-    g.add_edge("generate", END)
-    return g.compile()
+graph.add_node("retrieve", retrieve_node)
+graph.add_node("grade", grade_node)
+graph.add_node("rewrite", rewrite_node)
+graph.add_node("generate", generate_node)
 
-rag_graph = build_graph()
+graph.set_entry_point("retrieve")
+graph.add_edge("retrieve", "grade")
+graph.add_conditional_edges("grade", decide_next, {
+    "generate": "generate",
+    "rewrite": "rewrite"
+})
+graph.add_edge("rewrite", "retrieve")
+graph.add_edge("generate", END)
+
+rag_graph = graph.compile()

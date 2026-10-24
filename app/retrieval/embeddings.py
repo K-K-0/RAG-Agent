@@ -1,16 +1,12 @@
-from langchain_openai import OpenAIEmbeddings
-import os
-from dotenv import load_dotenv
+from langchain_huggingface import HuggingFaceEmbeddings
 
-load_dotenv()
 
 class Embedder:
 
     def __init__(self):
-        self.embedding = OpenAIEmbeddings(
-            model="text-embedding-3-small",
-            openai_api_base="https://aipipe.org/openai/v1",  
-            openai_api_key=os.getenv("OPENAI_API_KEY")
+        self.embedding = HuggingFaceEmbeddings(
+            model_name="BAAI/bge-small-en-v1.5",
+            encode_kwargs={"normalize_embeddings": True},
         )
 
     def get_embedding(self):

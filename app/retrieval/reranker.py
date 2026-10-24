@@ -25,5 +25,6 @@ class Reranker:
         )
 
         return [
-            doc for doc in ranked[:top_k]
+            doc
+            for doc, score in ranked[:top_k]
         ]
