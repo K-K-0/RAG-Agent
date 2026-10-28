@@ -22,6 +22,11 @@ def retrieve_node(state):
         question
     )
 
+    # for i, doc in enumerate(documents):
+    #     print("\n========== DOCUMENT", i, "==========")
+    #     print(doc.metadata)
+    #     print(doc.page_content[:500])
+
     return {
         "documents": documents
     }

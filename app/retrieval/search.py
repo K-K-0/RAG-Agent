@@ -14,7 +14,7 @@ query = "Who is the prof?"
 
 docs = retriever.invoke(query)
 
-for i, doc in enumerate(docs, start=1):
-    print(f"\nDocument {i}")
-    print("-" * 50)
-    print(doc.page_content)
+# for i, doc in enumerate(docs, start=1):
+#     print(f"\nDocument {i}")
+#     print("-" * 50)
+#     print(doc.page_content)

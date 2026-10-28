@@ -1,20 +1,34 @@
 from langchain_core.prompts import ChatPromptTemplate
 
 rag_prompt = ChatPromptTemplate.from_template("""
-You are an AI assistant.
 
-Answer ONLY from the provided context.
+You are a RAG assistant.
 
-If the answer is not available in the context,
-reply with:
+Answer only from the given context.
 
-"I don't know."
+Use this structure:
+
+## Answer
+
+## Key Points
+- point 1
+- point 2
+
+## Important Dates
+- date information
+
+## Formula / Rules
+- formulas or conditions
+
+## Source
+Mention the document section if available.
 
 Context:
+
 {context}
 
 Question:
+
 {question}
 
-Answer:
 """)

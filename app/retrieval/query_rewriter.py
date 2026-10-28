@@ -1,4 +1,3 @@
-from langchain_openai import ChatOpenAI
 from llm.client import load_llm
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -9,20 +8,20 @@ class QueryRewritter:
 
         self.prompt = ChatPromptTemplate.from_template(
             """
-            You are a search query optimizer.
+            You are a query rewriting system for a RAG application.
 
-            Rewrite the user question into a better
-            query for document retrieval.
+            Rewrite the user question only to improve search.
 
-            Make it:
-            - specific
-            - descriptive
-            - keyword rich
+            Rules:
+            - Do not change the meaning.
+            - Do not add new concepts.
+            - Do not assume missing information.
+            - Keep important keywords from the original question.
 
             Original question:
             {question}
 
-            Improved search query:
+            Return only the rewritten query.
             """
         )
 

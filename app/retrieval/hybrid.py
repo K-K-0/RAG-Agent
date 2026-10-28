@@ -27,8 +27,7 @@ class HybridRetriever:
         bm25_docs = (
             self.bm25_retriever.invoke(query)
         )
-
-
+        
         results = []
 
         seen = set()
