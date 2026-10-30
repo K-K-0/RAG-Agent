@@ -3,8 +3,7 @@ from graph.rag_graph import rag_graph
 
 result = rag_graph.invoke(
     {
-        "question":
-        "What is Grading formula for MLT?",
+        "question": "what are the new rules in the programme?",
 
         "documents":[],
 
@@ -13,10 +12,10 @@ result = rag_graph.invoke(
         "rewrite_count":0
     }
 )
-# for i, doc in enumerate(result["documents"]):
-#     print("=" * 80)
-#     print(f"Document {i}")
-#     print(doc.metadata)
-#     print(doc.page_content[:1000])
+for i, doc in enumerate(result["documents"]):
+    print("=" * 80)
+    # print(f"Document {i}")
+    # print(doc.metadata)
+    print(doc.page_content)
 
-print(result["answer"])
+print("Answer get: ", result["answer"])

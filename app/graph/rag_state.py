@@ -1,4 +1,5 @@
 from typing import TypedDict, List
+from langchain_core.messages import BaseMessage
 
 
 class RAGState(TypedDict):
@@ -7,3 +8,4 @@ class RAGState(TypedDict):
     documents: List
     answer: str
     rewrite_count: int
+    chat_history: List[BaseMessage]

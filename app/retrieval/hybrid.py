@@ -45,7 +45,7 @@ class HybridRetriever:
         reranked_docs = self.reranker.rerank(
             query=query,
             documents=results,
-            top_k=5
+            top_k=3
         )
 
 

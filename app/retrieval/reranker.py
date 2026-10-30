@@ -17,6 +17,8 @@ class Reranker:
             ])
 
         scores = self.model.predict(pairs)
+        for doc, score in zip(documents, scores):
+            print(score, doc.metadata)
 
         ranked = sorted(
             zip(documents, scores),

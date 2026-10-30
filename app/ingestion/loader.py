@@ -1,4 +1,4 @@
-from langchain_community.document_loaders import PyPDFLoader
+from langchain_community.document_loaders import PyMuPDFLoader
 
 class PDFLoader:
 
@@ -6,7 +6,7 @@ class PDFLoader:
         self.path = path
 
     def load(self):
-        loader = PyPDFLoader(self.path)
+        loader = PyMuPDFLoader(self.path)
         documents = loader.load()
 
         for doc in documents:
