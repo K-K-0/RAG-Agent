@@ -9,3 +9,4 @@ pypdf
 pytest
 httpx
 langchain_chroma
+langchain_huggingface
