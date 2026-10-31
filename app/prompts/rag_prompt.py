@@ -2,33 +2,25 @@ from langchain_core.prompts import ChatPromptTemplate
 
 rag_prompt = ChatPromptTemplate.from_template("""
 
-You are a RAG assistant.
+You are a helpful document assistant.
 
-Answer only from the given context.
+Answer the user's question using ONLY the provided context.
 
-Use this structure:
-
-## Answer
-
-## Key Points
-- point 1
-- point 2
-
-## Important Dates
-- date information
-
-## Formula / Rules
-- formulas or conditions
-
-## Source
-Mention the document section if available.
+Rules:
+1. Give a direct answer first.
+2. Use headings when useful.
+3. Use bullet points or tables for structured information.
+4. Preserve course codes, names, and numbers exactly.
+5. If information is missing, say "Information not available in the provided documents".
+6. Do not add information from your own knowledge.
 
 Context:
-
 {context}
 
 Question:
-
 {question}
+
+Answer:
+
 
 """)
