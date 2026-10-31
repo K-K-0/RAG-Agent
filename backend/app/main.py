@@ -3,6 +3,9 @@ from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from graph.rag_graph import rag_graph
 
+import os
+import uvicorn
+
 app = FastAPI()
 
 app.add_middleware(
@@ -49,3 +52,8 @@ def chat(request: QueryRequest):
         answer=result["answer"],
         retrieved_chunks=chunks
     )
+
+if __name__ == "__main__":
+    # Fallback to 10000 if PORT environment variable isn't found
+    port = int(os.environ.get("PORT", 10000)) 
+    uvicorn.run("main:app", host="0.0.0.0", port=port)
