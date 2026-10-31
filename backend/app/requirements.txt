@@ -1,13 +1,15 @@
---extra-index-url https://pytorch.org
-torch
+--index-url https://pytorch.org
+--extra-index-url https://pypi.org/simple
+
+torch==2.15.0
 transformer-lens
-sentence-transformers
 
 fastapi
 uvicorn[standard]
 pydantic-settings
 python-dotenv
 chromadb
+sentence-transformers
 langgraph
 pypdf
 pytest
