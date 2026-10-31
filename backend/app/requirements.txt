@@ -8,3 +8,4 @@ langgraph
 pypdf
 pytest
 httpx
+langchain_chroma
