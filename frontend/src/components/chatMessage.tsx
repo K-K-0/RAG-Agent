@@ -1,118 +1,179 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { FaUser, FaRobot } from "react-icons/fa";
+
+import {
+    FaRobot,
+    FaUser
+} from "react-icons/fa";
+
 
 
 interface Props {
 
-role:"user"|"assistant";
+    role: "user" | "assistant";
 
-content:string;
+    content: string;
 
 }
 
 
 
 export default function ChatMessage({
-role,
-content
-}:Props){
+    role,
+    content
+}: Props) {
 
 
-const user = role==="user";
+    const user =
+        role === "user";
 
 
 
-return (
+    return (
 
-<div
-className={`
+        <div
+            className={`
 flex
 gap-4
 
 ${user
-?"justify-end"
-:"justify-start"
-}
+                    ?
+                    "justify-end"
+                    :
+                    "justify-start"
+                }
 
 `}
->
+        >
 
 
-{
-!user &&
 
-<div
-className="
-mt-1
+            {
+                !user &&
+
+                <div
+                    className="
 text-green-400
+mt-2
 "
->
+                >
 
-<FaRobot/>
+                    <FaRobot />
 
-</div>
+                </div>
 
-}
+            }
 
 
 
-<div
-className={`
+
+
+
+            <div
+                className={`
 max-w-3xl
-
-text-[16px]
-
 leading-7
 
+
 ${user
-?
-"bg-[#2f2f2f] rounded-3xl px-5 py-3"
-:
-""
-}
+                        ?
+                        "bg-[#2f2f2f] px-5 py-3 rounded-3xl"
+                        :
+                        "text-gray-200"
+                    }
 
 `}
->
+            >
 
 
-<ReactMarkdown
+                <ReactMarkdown
 
-remarkPlugins={[remarkGfm]}
+                    remarkPlugins={[
+                        remarkGfm
+                    ]}
 
->
+                    components={{
 
-{content}
+                        strong: ({ children }) => (
 
-</ReactMarkdown>
-
-
-</div>
-
-
-
-
-
-{
-user &&
-
-<div
-className="
-mt-1
-text-gray-400
+                            <strong
+                                className="
+text-green-400
 "
->
+                            >
+                                {children}
+                            </strong>
 
-<FaUser/>
-
-</div>
-
-}
+                        ),
 
 
-</div>
+                        h2: ({ children }) => (
+
+                            <h2
+                                className="
+text-xl
+font-bold
+mt-5
+mb-3
+"
+                            >
+                                {children}
+                            </h2>
+
+                        ),
 
 
-);
+                        li: ({ children }) => (
+
+                            <li
+                                className="
+ml-5
+list-disc
+"
+                            >
+                                {children}
+                            </li>
+
+                        )
+
+                    }}
+
+                >
+
+                    {content}
+
+                </ReactMarkdown>
+
+
+
+            </div>
+
+
+
+
+
+
+            {
+                user &&
+
+                <div
+                    className="
+text-gray-400
+mt-2
+"
+                >
+
+                    <FaUser />
+
+                </div>
+
+            }
+
+
+
+        </div>
+
+
+    )
 
 }

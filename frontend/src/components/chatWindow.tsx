@@ -1,7 +1,27 @@
-import { useState, useRef, useEffect } from "react";
-import { askQuestion } from "../api/rag";
-import ChatInput from "./chatInput";
+import {
+    useState,
+    useRef,
+    useEffect
+} from "react";
+
+
+import {
+    FaRobot,
+    FaFilePdf,
+    FaTrash,
+    FaBolt
+} from "react-icons/fa";
+
+
+import Sidebar from "./sidebar";
+
 import ChatMessage from "./chatMessage";
+
+import ChatInput from "./chatInput";
+
+
+import { askQuestion } from "../api/rag";
+
 
 
 interface Message {
@@ -13,25 +33,53 @@ interface Message {
 }
 
 
-export default function ChatWindow() {
+
+export default function ChatWindow(){
 
 
-    const [messages, setMessages] = useState<Message[]>([]);
 
-    const [loading, setLoading] = useState(false);
+    const [messages,setMessages]
+    =
+    useState<Message[]>([]);
 
 
-    const bottomRef = useRef<HTMLDivElement>(null);
+
+    const [loading,setLoading]
+    =
+    useState(false);
+
+
+
+    const bottomRef =
+    useRef<HTMLDivElement>(null);
+
+
 
 
 
     useEffect(()=>{
 
+
         bottomRef.current?.scrollIntoView({
             behavior:"smooth"
         });
 
+
     },[messages,loading]);
+
+
+
+
+
+
+
+    const clearChat = ()=>{
+
+        setMessages([]);
+
+    };
+
+
 
 
 
@@ -40,12 +88,20 @@ export default function ChatWindow() {
     const sendMessage = async(question:string)=>{
 
 
+        if(!question.trim())
+            return;
+
+
+
         setMessages(prev=>[
+
             ...prev,
+
             {
                 role:"user",
                 content:question
             }
+
         ]);
 
 
@@ -56,16 +112,24 @@ export default function ChatWindow() {
 
         try{
 
-            const response = await askQuestion(question);
+
+            const response =
+            await askQuestion(question);
+
 
 
             setMessages(prev=>[
+
                 ...prev,
+
                 {
                     role:"assistant",
                     content:response.answer
                 }
+
             ]);
+
+
 
         }
 
@@ -73,17 +137,26 @@ export default function ChatWindow() {
 
 
             setMessages(prev=>[
+
                 ...prev,
+
                 {
+
                     role:"assistant",
-                    content:"Something went wrong."
+
+                    content:"⚠️ Something went wrong."
+
                 }
+
             ]);
+
 
         }
 
 
+
         setLoading(false);
+
 
     };
 
@@ -91,117 +164,448 @@ export default function ChatWindow() {
 
 
 
+
+
+
+
     return (
 
+
         <div
+
         className="
         h-screen
+        flex
         bg-[#212121]
         text-white
-        flex
-        flex-col
         "
+
         >
 
 
 
-            {/* Header */}
 
-            <div
-            className="
-            h-14
-            border-b
-            border-white/10
-            flex
-            items-center
-            justify-center
-            "
-            >
+            {/* SIDEBAR */}
 
-                <h1 className="
-                font-semibold
-                text-lg
-                ">
-                    RAG Assistant
-                </h1>
+            <Sidebar
 
+                clearChat={clearChat}
 
-            </div>
+            />
 
 
 
 
 
 
-            {/* Messages */}
+
+
+            {/* MAIN AREA */}
 
 
             <div
+
             className="
             flex-1
-            overflow-y-auto
+            flex
+            flex-col
             "
+
             >
+
+
+
+
+
+
+                {/* HEADER */}
 
 
                 <div
+
                 className="
-                max-w-3xl
-                mx-auto
-                px-4
-                py-8
-                space-y-8
+                h-16
+                flex
+                items-center
+                justify-between
+
+                px-6
+
+                border-b
+                border-white/10
+
                 "
+
                 >
 
 
 
-                {
-                    messages.length===0 &&
-
                     <div
+
                     className="
-                    h-[60vh]
                     flex
                     items-center
-                    justify-center
-                    text-center
+                    gap-3
                     "
+
                     >
 
-                        <div>
 
-                        <h2
+
+                        <div
+
                         className="
-                        text-3xl
-                        font-semibold
-                        "
-                        >
-                            How can I help you?
-                        </h2>
+                        w-9
+                        h-9
+                        rounded-lg
 
+                        bg-green-500/20
 
-                        <p
-                        className="
-                        text-gray-400
-                        mt-3
+                        flex
+                        items-center
+                        justify-center
                         "
+
                         >
-                            Ask questions from your documents
-                        </p>
+
+                            <FaRobot
+                            className="
+                            text-green-400
+                            "
+                            />
+
 
                         </div>
 
 
+
+
+
+                        <div>
+
+
+                            <h1
+                            className="
+                            font-semibold
+                            "
+                            >
+
+                                RAG Assistant
+
+                            </h1>
+
+
+
+                            <p
+                            className="
+                            text-xs
+                            text-gray-400
+                            "
+                            >
+
+                                AI powered document search
+
+                            </p>
+
+
+
+                        </div>
+
+
+
+
                     </div>
 
-                }
 
 
 
 
-                {
+
+                    <button
+
+                    onClick={clearChat}
+
+                    className="
+                    flex
+                    items-center
+                    gap-2
+
+                    px-3
+                    py-2
+
+                    rounded-lg
+
+                    bg-white/5
+
+                    border
+                    border-white/10
+
+                    text-sm
+
+                    hover:bg-white/10
+
+                    "
+
+                    >
+
+                        <FaTrash/>
+
+                        Clear
+
+
+                    </button>
+
+
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                {/* CHAT CONTENT */}
+
+
+
+                <div
+
+                className="
+                flex-1
+                overflow-y-auto
+                "
+
+                >
+
+
+
+                    <div
+
+                    className="
+                    max-w-3xl
+                    mx-auto
+
+                    px-4
+                    py-8
+
+                    space-y-8
+
+                    "
+
+                    >
+
+
+
+
+
+
+                    {
+
+                    messages.length===0 &&
+
+
+                    <div
+
+                    className="
+                    h-[65vh]
+
+                    flex
+                    flex-col
+
+                    items-center
+                    justify-center
+
+                    text-center
+
+                    "
+
+                    >
+
+
+
+                        <div
+
+                        className="
+                        w-20
+                        h-20
+
+                        rounded-full
+
+                        bg-green-500/10
+
+                        flex
+                        items-center
+                        justify-center
+
+                        mb-5
+
+                        "
+
+                        >
+
+                            <FaRobot
+
+                            className="
+                            text-4xl
+                            text-green-400
+                            "
+
+                            />
+
+
+                        </div>
+
+
+
+
+
+                        <h2
+
+                        className="
+                        text-3xl
+                        font-semibold
+                        "
+
+                        >
+
+                            How can I help you?
+
+                        </h2>
+
+
+
+
+                        <p
+
+                        className="
+                        text-gray-400
+                        mt-3
+                        "
+
+                        >
+
+                            Ask questions from your PDF documents
+
+                        </p>
+
+
+
+
+
+
+
+                        <div
+
+                        className="
+                        flex
+                        flex-wrap
+                        justify-center
+                        gap-3
+
+                        mt-8
+
+                        "
+
+                        >
+
+
+
+                        {
+
+
+                        [
+
+                            "Explain BSc completion timeline",
+
+                            "What is refund policy?",
+
+                            "Tell me about minors",
+
+                            "Explain Computer System Design"
+
+                        ]
+
+
+                        .map(item=>(
+
+
+
+                            <button
+
+
+                            key={item}
+
+
+                            onClick={()=>sendMessage(item)}
+
+
+
+                            className="
+
+                            px-4
+                            py-3
+
+                            rounded-xl
+
+                            bg-[#2f2f2f]
+
+                            border
+                            border-white/10
+
+                            text-sm
+
+                            text-gray-300
+
+                            hover:bg-[#3a3a3a]
+
+                            "
+
+                            >
+
+
+                                {item}
+
+
+                            </button>
+
+
+
+                        ))
+
+
+
+                        }
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+                    }
+
+
+
+
+
+
+
+
+
+                    {
+
+
                     messages.map((msg,index)=>(
+
 
                         <ChatMessage
 
@@ -213,34 +617,128 @@ export default function ChatWindow() {
 
                         />
 
+
                     ))
-                }
+
+
+                    }
 
 
 
 
-                {
+
+
+
+
+
+                    {
+
                     loading &&
 
+
                     <div
+
                     className="
                     text-gray-400
+                    animate-pulse
                     "
+
                     >
 
-                        Thinking...
+                        🤖 Thinking...
+
 
                     </div>
 
-                }
+
+                    }
 
 
 
 
-                <div ref={bottomRef}/>
+
+                    <div ref={bottomRef}/>
+
+
+
+                    </div>
+
 
 
                 </div>
+
+
+
+
+
+
+
+
+
+                {/* INPUT AREA */}
+
+
+                <div
+
+                className="
+                border-t
+                border-white/10
+
+                py-3
+
+                "
+
+                >
+
+
+
+                    <div
+
+                    className="
+                    max-w-3xl
+                    mx-auto
+
+                    flex
+                    gap-2
+
+                    text-xs
+                    text-gray-500
+
+                    mb-2
+
+                    "
+
+                    >
+
+
+                        <FaBolt/>
+
+
+                        RAG Mode • Hybrid Search • PDF Knowledge Base
+
+
+                    </div>
+
+
+
+
+
+
+                    <ChatInput
+
+                    onSend={sendMessage}
+
+                    />
+
+
+
+
+                </div>
+
+
+
+
+
 
 
             </div>
@@ -249,15 +747,10 @@ export default function ChatWindow() {
 
 
 
-            {/* Input */}
-
-            <ChatInput
-            onSend={sendMessage}
-            />
-
-
         </div>
 
+
     );
+
 
 }
