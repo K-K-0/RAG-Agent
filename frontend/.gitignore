@@ -3,3 +3,4 @@ venv/
 *.pdf
 .env
 backend/app/__pycache__
+frontend/node_modules
