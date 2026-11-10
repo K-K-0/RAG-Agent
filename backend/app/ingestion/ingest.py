@@ -77,7 +77,7 @@ def ingest_all(data_path):
 if __name__ == "__main__":
 
     chunks = ingest_all(
-       '/home/k-k/RAG/data'
+       '/home/k-k/RAG/backend/data'
     )
 
     print("\n--- First Chunk ---")

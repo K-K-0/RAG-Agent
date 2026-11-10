@@ -1,18 +1,19 @@
---index-url https://pytorch.org
---extra-index-url https://pypi.org/simple
+fastapi==0.116.1
+uvicorn==0.35.0
 
-torch==2.15.0
-transformer-lens
+langchain==0.3.27
+langgraph==0.6.6
+langchain-community==0.3.27
+langchain-chroma==0.2.5
+langchain-groq==0.3.8
+langchain-openai==0.3.30
+langchain-huggingface==0.3.1
 
-fastapi
-uvicorn[standard]
-pydantic-settings
-python-dotenv
-chromadb
-sentence-transformers
-langgraph
-pypdf
-pytest
-httpx
-langchain_chroma
-langchain_huggingface
+chromadb==1.0.20
+sentence-transformers==5.1.0
+transformers==4.56.0
+huggingface-hub==0.35.1
+
+pypdf==6.0.0
+rank-bm25==0.2.2
+python-dotenv==1.1.1

@@ -1,3 +1,10 @@
+import sys
+import os
+
+sys.path.append(
+    os.path.dirname(__file__)
+)
+
 from langgraph.graph import StateGraph, END
 
 from graph.rag_state import RAGState

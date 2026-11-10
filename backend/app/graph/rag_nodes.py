@@ -1,47 +1,96 @@
+import os
+import sys
+
+sys.path.append(
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            ".."
+        )
+    )
+)
+
+
 from retrieval.hybrid import HybridRetriever
 from retrieval.grader_filter import GradedRetrival
 from retrieval.query_rewriter import QueryRewritter
 from llm.client import load_llm
 
 
-retriever = HybridRetriever()
+retriever = None
+grader = None
+rewriter = None
+llm = None
 
-grader = GradedRetrival()
 
-query_rewriter = QueryRewritter()
 
-llm = load_llm()
+def get_retriever():
+
+    global retriever
+
+    if retriever is None:
+        retriever = HybridRetriever()
+
+    return retriever
+
+
+
+def get_grader():
+
+    global grader
+
+    if grader is None:
+        grader = GradedRetrival()
+
+    return grader
+
+
+
+def get_rewriter():
+
+    global rewriter
+
+    if rewriter is None:
+        rewriter = QueryRewritter()
+
+    return rewriter
+
+
+
+def get_llm():
+
+    global llm
+
+    if llm is None:
+        llm = load_llm()
+
+    return llm
 
 
 
 def retrieve_node(state):
 
-    question = state["question"]
+    retriever = get_retriever()
 
-    documents = retriever.retrieve(
-        question
+    docs = retriever.retrieve(
+        state["question"]
     )
-
-    for i, doc in enumerate(documents):
-        print("\n========== DOCUMENT", i, "==========")
-        print(doc.metadata)
-        print(doc.page_content[:500])
+    print(docs)
 
     return {
-        "documents": documents
+        "documents": docs
     }
+
 
 
 
 def grade_node(state):
 
-    question = state["question"]
-
-    documents = state["documents"]
+    grader = get_grader()
 
     filtered_documents = grader.filter_document(
-        question,
-        documents
+        state["question"],
+        state["documents"]
     )
 
     return {
@@ -52,10 +101,10 @@ def grade_node(state):
 
 def rewrite_node(state):
 
-    question = state["question"]
+    rewriter = get_rewriter()
 
-    new_question = query_rewriter.rewrite(
-        question
+    new_question = rewriter.rewrite(
+        state["question"]
     )
 
     return {
@@ -67,14 +116,11 @@ def rewrite_node(state):
 
 def generate_node(state):
 
-    question = state["question"]
-
-    documents = state["documents"]
-
+    llm = get_llm()
 
     context = "\n\n".join(
         doc.page_content
-        for doc in documents
+        for doc in state["documents"]
     )
 
 
@@ -85,7 +131,7 @@ def generate_node(state):
     {context}
 
     Question:
-    {question}
+    {state["question"]}
     """
 
 
@@ -100,9 +146,7 @@ def generate_node(state):
 
 def decide_next(state):
 
-    documents = state["documents"]
-
-    if len(documents) > 0:
+    if len(state["documents"]) > 0:
         return "generate"
 
 

@@ -1,3 +1,8 @@
+import os
+import sys
+
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from langchain_openai import ChatOpenAI
 from llm.client import load_llm
 from langchain_core.prompts import ChatPromptTemplate

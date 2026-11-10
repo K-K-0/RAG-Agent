@@ -5,7 +5,7 @@ class Reranker:
 
     def __init__(self):
         self.model = CrossEncoder(
-            "BAAI/bge-reranker-base"
+            "cross-encoder/ms-marco-MiniLM-L-6-v2"
         )
 
     def rerank(self, query, documents, top_k=5):
